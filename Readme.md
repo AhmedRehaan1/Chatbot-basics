@@ -1,6 +1,6 @@
 # Student Management System with Chatbot
 
-
+https://github.com/user-attachments/assets/7796306b-dc71-492c-a347-6b6490f15d26
 
 
 ## Project Overview
