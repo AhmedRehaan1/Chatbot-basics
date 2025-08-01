@@ -102,7 +102,7 @@ def user_dashboard():
     st.sidebar.title("Suggested Prompts")
     st.sidebar.write("You can ask questions like:")
     st.sidebar.write("- Fetch all students")
-    st.sidebar.write("- What is the average age of students?")
+    st.sidebar.write("- What is the average age?")
     st.sidebar.write("- Who is the youngest student?")
     st.sidebar.write("- Who is the oldest student?")
     st.sidebar.write("- please Count students")
