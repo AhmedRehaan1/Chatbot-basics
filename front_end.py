@@ -10,7 +10,7 @@ def add_logo():
     # Use columns to position the logo and title
     col1, col2 = st.columns([1, 4])
     with col1:
-        st.image("logo.png", width=400)  # Adjust path and width as needed
+        st.image("logo.jpg", width=400)  # Adjust path and width as needed
     with col2:
         st.empty()  # This space can be used for a title if needed
 
