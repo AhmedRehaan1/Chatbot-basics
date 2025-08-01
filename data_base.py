@@ -71,16 +71,16 @@ class DataBase:
             rows = []
         return rows
 
-    def delete_student(self, name: str):
-        """Delete a student record by name."""
+    def delete_student(self, student: Student):
+        """Delete a student record by student object name."""
         try:
             c = self.conn.cursor()
-            c.execute("DELETE FROM STUDENTS WHERE Name = ?", (name,))
+            c.execute("DELETE FROM STUDENTS WHERE Name = ?", (student.name,))
             self.conn.commit()
             if c.rowcount > 0:
-                print(f"Deleted student with name: {name}")
+                print(f"Deleted student with name: {student.name}")
             else:
-                print(f"No student found with name: {name}")
+                print(f"No student found with name: {student.name}")
         except sq.Error as e:
             print(f"Error deleting student: {e}")
     def avgerage_age(self):
@@ -93,16 +93,79 @@ class DataBase:
         except sq.Error as e:
             print(f"Error calculating average age: {e}")
             return 0
-    def update_student(self, name: str, age: str, grade: str):
-        """Update a student's age and grade by name."""
+    def best_student(self):
+        """Fetch the student with the highest grade."""
         try:
             c = self.conn.cursor()
-            c.execute("UPDATE STUDENTS SET Age = ?, Grade = ? WHERE Name = ?", (age, grade, name))
+            c.execute("SELECT Name, Grade FROM STUDENTS ORDER BY Grade DESC LIMIT 1")
+            best_student = c.fetchone()
+            return best_student if best_student else None
+        except sq.Error as e:
+            print(f"Error fetching best student: {e}")
+            return None
+    def fetch_students_by_grade(self, grade: str):
+        """Fetch all students with a specific grade."""
+        try:
+            c = self.conn.cursor()
+            c.execute("SELECT * FROM STUDENTS WHERE Grade = ?", (grade,))
+            students = c.fetchall()
+            return students
+        except sq.Error as e:
+            print(f"Error fetching students by grade {grade}: {e}")
+            return []
+    def oldest_student(self):
+        """Fetch the oldest student."""
+        try:
+            c = self.conn.cursor()
+            c.execute("SELECT Name, Age FROM STUDENTS ORDER BY CAST(Age AS REAL) DESC LIMIT 1")
+            oldest_student = c.fetchone()
+            return oldest_student if oldest_student else None
+        except sq.Error as e:
+            print(f"Error fetching oldest student: {e}")
+            return None
+    def youngest_student(self):
+        """Fetch the youngest student."""
+        try:
+            c = self.conn.cursor()
+            c.execute("SELECT Name, Age FROM STUDENTS ORDER BY CAST(Age AS REAL) ASC LIMIT 1")
+            youngest_student = c.fetchone()
+            return youngest_student if youngest_student else None
+        except sq.Error as e:
+            print(f"Error fetching youngest student: {e}")
+            return None
+    def average_grade(self):
+        """Calculate the average grade of all students."""
+        try:
+            c = self.conn.cursor()
+            c.execute("SELECT AVG(CASE Grade WHEN 'A' THEN 4 WHEN 'B' THEN 3 WHEN 'C' THEN 2 WHEN 'D' THEN 1 ELSE 0 END) FROM STUDENTS")
+            avg_grade = c.fetchone()[0]
+            return avg_grade if avg_grade is not None else 0
+        except sq.Error as e:
+            print(f"Error calculating average grade: {e}")
+            return 0
+    def count_students(self):
+        """Count the total number of students."""
+        try:
+            c = self.conn.cursor()
+            c.execute("SELECT COUNT(*) FROM STUDENTS")
+            count = c.fetchone()[0]
+            return count
+        except sq.Error as e:
+            print(f"Error counting students: {e}")
+            return 0
+    def update_student(self, student: Student):
+        """Update a student's age and grade by student object name."""
+        try:
+            c = self.conn.cursor()
+            c.execute(
+                "UPDATE STUDENTS SET Age = ?, Grade = ? WHERE Name = ?",
+                (student.age, student.grade, student.name)
+            )
             self.conn.commit()
             if c.rowcount > 0:
-                print(f"Updated student {name} successfully.")
+                print(f"Updated student {student.name} successfully.")
             else:
-                print(f"No student found with name: {name}")
+                print(f"No student found with name: {student.name}")
         except sq.Error as e:
             print(f"Error updating student: {e}")
     def main(self):

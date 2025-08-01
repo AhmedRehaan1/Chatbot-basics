@@ -5,6 +5,15 @@ from data_base import DataBase
 from chatbot import ChatBot
 from student import Student 
 
+#logo of the school
+def add_logo():
+    # Use columns to position the logo and title
+    col1, col2 = st.columns([1, 4])
+    with col1:
+        st.image("logo.png", width=400)  # Adjust path and width as needed
+    with col2:
+        st.empty()  # This space can be used for a title if needed
+
 # Initialize database and chatbot
 db = DataBase("students.db")
 chatbot = ChatBot("students.db")
@@ -77,18 +86,31 @@ def admin_dashboard():
 
     with col2:
         if st.button("Delete Student"):
-            db.delete_student(name)
+            student = Student(name=name)
+            db.delete_student(student)
     with col3:
         if st.button("Update Student"):
-            db.update_student(name, age, grade)
-    
+            student = Student(name=name, age=age, grade=grade)
+            db.update_student(student)    
     students = db.fetch_all_students()
     st.table(students)
 
 def user_dashboard():
     st.title("User Dashboard")
     st.header("Chat with Student Assistant")
-    
+    ##sidebar contains the sugessted prompts
+    st.sidebar.title("Suggested Prompts")
+    st.sidebar.write("You can ask questions like:")
+    st.sidebar.write("- Fetch all students")
+    st.sidebar.write("- What is the average age of students?")
+    st.sidebar.write("- Who is the youngest student?")
+    st.sidebar.write("- Who is the oldest student?")
+    st.sidebar.write("- please Count students")
+    st.sidebar.write("- Fetch A grade students")
+    st.sidebar.write("- Who is the best student?")
+
+
+
     # Chatbot Interface
     user_input = st.text_input("Ask a question about students:")
     if user_input:
@@ -98,6 +120,7 @@ def user_dashboard():
 
 # --- Main App Flow ---
 def main():
+    add_logo()
     if "page" not in st.session_state:
         st.session_state["page"] = "login"
     
