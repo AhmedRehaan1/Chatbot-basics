@@ -1,0 +1,38 @@
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment files
+.env
+*.env
+
+# SQLite database
+*.db
+
+# User and credentials JSON files
+users.json
+credintal.json
+
+# Logs or other local data
+*.log
+
+# Streamlit-specific
+.streamlit/
+
+# Image and media files
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# PDF documents
+*.pdf
